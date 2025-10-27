@@ -1,9 +1,6 @@
 # Use the official Nginx image
 FROM nginx:latest
 
-# Install curl and jq to fetch metadata (useful for cloud instances)
-RUN apt-get update && apt-get install -y curl jq bash
-
 # Set the working directory
 WORKDIR /usr/share/nginx/html
 
