@@ -29,3 +29,6 @@ cat <<EOF > $nginx_index_file
 </body>
 </html>
 EOF
+
+# Start Nginx in the foreground so the container keeps running
+nginx -g "daemon off;"
