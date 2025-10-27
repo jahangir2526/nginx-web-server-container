@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-web-app-deploy
+  labels:
+    app: simple-web-app
+    builder: jahangir
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-web-app
+      builder: jahangir
+  template:
+    metadata:
+      labels:
+        app: simple-web-app
+        builder: jahangir
+    spec:
+      containers:
+      - name: simple-web-app
+        image: ${P_OCIR_REGION_KEY}.ocir.io/${P_TENANCY_NAMESPACE}/${P_OCIR_REPO_NAME}:${BUILDRUN_HASH}
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+        - name: ${P_IMAGE_PULL_SECRET}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-web-app-service
+  labels:
+    app: simple-web-app
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    #nodePort: 32001
+    #name: simple-web-app-port
+  selector:
+    app: simple-web-app
+    builder: jahangir
